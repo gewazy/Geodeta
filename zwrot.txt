@@ -1,0 +1,28 @@
+Generowania raportu DPR.
+	ver3.beta-dane z dnia: 20220613-Wypełniłem arkusz
+--Wibratory: 4416
+--Wiercenie ręczne: 579
+--Wiercenie traktorem: 2535
+--W tym patterny: 747
+--Skipy: 80
+--QC R: 18
+--QC S: 18
+
+Tyczenie punktów odbioru: 
+('50214', '1', 'ZUPT  Klosek', 1)
+
+Tyczenie punktów wzbudzania: 
+
+Domierzanie/niwelacja punktów odbioru: 
+
+Domierzanie/niwelacja punktów wzbudzania: 
+
+Zmiany punktów odbioru: 
+
+Zmiany punktów wzbudzania: 
+
+Pomiar otworów głębokich: 
+
+
+Pracowało 1 brygad
+1. Klosek
