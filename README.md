@@ -11,7 +11,7 @@ Co musisz mieć:
 	* smtlib
 	* xlrd
 	* pyproj
-	* tkinter (powinnien być domyślnie)
+	* tkinter
 	* openpyxl
 ___  
 
@@ -27,7 +27,6 @@ Jak usiądziesz za konsoletą wprowadź zmienne:
 	+ SUPERVISOR
 	+ RECIPENT_DPR (tu podajesz odbiorów wiadomości email z raportami)
 	+ RECIP_JSON (odbiorcy pliku JSON)
-
 
 
 
