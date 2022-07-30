@@ -91,7 +91,7 @@ smtp_server.ehlo()  # setting the ESMTP protocol
 smtp_server.starttls()  # setting up to TLS connection
 smtp_server.login(f'{init.GRUPA.lower()}surveyor', password.PASSWORD)  # user and pass
 smtp_server.send_message(msg_json)
-print('JSON został wysłany do Transcribera.')
+print(f'JSON został wysłany do {init.RECIP_JSON}.')
 smtp_server.quit()
 
 sleep(2)

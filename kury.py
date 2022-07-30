@@ -3,7 +3,7 @@ import init
 '''
 Zapytania SQL
 
-W pliku init.py podajemy przedziały linii oraz descriptoy używane na grupie.
+W pliku init.py podajemy przedziały linii oraz descriptory używane na grupie.
 Tu kwerend nie zmieniajmy, chyba że zmiana okazuje się niezbędna. 
 '''
 

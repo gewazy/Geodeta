@@ -3,6 +3,7 @@ import pyproj
 import pyodbc
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
+from time import sleep
 
 import init
 
@@ -84,16 +85,16 @@ with open(save_filename, 'r') as r_VIB:
                        row['Y'] if row['Y'] != '' else None,
                        None,
                        row['Name'] if row['Name'] != '' else None,
-                       row['Descriptor'],
+                       None,
                        row['VIB_easting'],
                        row['VIB_northing'],
                        None,
                        None,
                        None)
                      )
-
+# row['Descriptor']
 for par in params:
-    print(par)
+    print(par[5], par[6], par[7], par[9], par[25])
 
 # łaczenie z bazą danych i wgranie danych
 cnxn = pyodbc.connect(init.CONN_STR)
@@ -112,4 +113,6 @@ cnxn.commit()
 cnxn.close()
 
 
-input('zrobione!! \n\nENTER żeby zamknąć okno')
+print("Done!\nZa 3 sek. zamknę okno!")
+sleep(3)
+exit()

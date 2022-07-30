@@ -11,12 +11,6 @@ crsr = cnxn.cursor()
 
 # tworzę kwerendy
 
-#KWERWNDA TESTOWA !!! nie działa
-upd = "UPDATE [REMEASURE] " \
-      "SET [REMEASURE].`Status` = [POSTPLOT].`Status` " \
-      "FROM [REMEASURE] INNER JOIN [POSTPLOT] ON [REMEASURE].`Station (value)` = [POSTPLOT].`Station (value)` " \
-
-# te kwerendy działają
 upd_s = "UPDATE [REMEASURE],[POSTPLOT] " \
        "SET " \
        "[REMEASURE].`COG Local Easting` = [POSTPLOT].`COG Local Easting`, " \

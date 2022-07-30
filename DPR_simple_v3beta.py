@@ -24,7 +24,8 @@ crsr = cnxn.cursor()
 vib = len(crsr.execute(kury.VIB).fetchall())
 xr = len(crsr.execute(kury.XR).fetchall())
 xt = len(crsr.execute(kury.XT).fetchall())
-skip = len(crsr.execute(kury.SKIP_S).fetchall())
+skip_S = len(crsr.execute(kury.SKIP_S).fetchall())
+skip_R = len(crsr.execute(kury.SKIP_R).fetchall())
 qc_r = len(crsr.execute(kury.QC_R).fetchall())
 qc_s = len(crsr.execute(kury.QC_S).fetchall())
 paterny = len(crsr.execute(kury.PATERNY).fetchall())
@@ -94,8 +95,12 @@ print('--W tym patterny: ', paterny)
 target['H134'] = paterny
 sleep(1)
 
-print('--Skipy: ', skip)
-target['K132'] = skip
+print('--Skipy S: ', skip_S)
+target['K132'] = skip_S
+sleep(1)
+
+print('--Skipy R: ', skip_R)
+target['K133'] = skip_R
 sleep(1)
 
 print('--QC R: ', qc_r)
@@ -237,7 +242,7 @@ for num, geodeta in enumerate(sorted(set(licz_bry))):
 sleep(1)
 
 target['N132'] = len(set(licz_bry))
-target['B128'] = input('\nWprowadź komentarz:\n')
+target['B128'] = f'Brygady Zupt: {init.ZUPT_BRYG}\n' + input('\nWprowadź komentarz:\n')
 
 print('\nZapisuję plik')
 wb.save(init.DPR[0])
