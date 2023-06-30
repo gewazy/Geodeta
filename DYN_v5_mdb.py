@@ -34,6 +34,7 @@ print('\nw pliku BoomBox znalazłem następujące zakładki: \n' + str(sheets))
 ws = wb.sheetnames[0]
 print('pracuję na zakładce: \n' + ws)
 dzien = f'{ws[8:12]}-{ws[12:14]}-{ws[14:16]} {ws[17:19]}:{ws[19:21]}:{ws[21:23]}'
+print (type (ws[8:12]))
 print(f'Czas generowania danych {dzien}')
 
 ws2 = wb[ws]
@@ -104,9 +105,30 @@ for row in params:
 cnxn = pyodbc.connect(init.CONN_STR)  # łączenie z bazą danych
 crsr = cnxn.cursor()
 
+try:
+    crsr.execute('select * from DYN;')
+except pyodbc.ProgrammingError:
+    crsr.execute(
+                 "CREATE TABLE DYN ("
+                 "[Crew] text(32),"
+                 "[Unit] text(32),"
+                 "[ID] text(32),"
+                 "[Line] Long,"
+                 "[Station] Long,"
+                 "[Time] Date,"
+                 "[Status] text(32),"
+                 "[Lat(deg N)] Double, "
+                 "[Lon(deg E)] Double, "
+                 "[Alt(m)] Single,"
+                 "[Name] Long,"
+                 "[JulianDay] Long, "
+                 "[Local Easting] Double, "
+                 "[Local Northing] Double);")
+
 crsr.executemany("INSERT INTO DYN ([Crew], [Unit], [ID], [Line], [Station], [Time], [Status], "
                  "[Lat(deg N)], [Lon(deg E)], [Alt(m)], [Name], [JulianDay], [Local Easting], [Local Northing])"
                  "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", params)
+
 crsr.close()
 cnxn.commit()
 cnxn.close()
