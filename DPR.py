@@ -25,7 +25,8 @@ crsr = cnxn.cursor()
 vib = len(crsr.execute(kury.VIB).fetchall())
 xr = len(crsr.execute(kury.XR).fetchall())
 xt = len(crsr.execute(kury.XT).fetchall())
-skip = len(crsr.execute(kury.SKIP_S).fetchall())
+skip_s = len(crsr.execute(kury.SKIP_S).fetchall())
+skip_r = len(crsr.execute(kury.SKIP_R).fetchall())
 qc_r = len(crsr.execute(kury.QC_R).fetchall())
 qc_s = len(crsr.execute(kury.QC_S).fetchall())
 paterny = len(crsr.execute(kury.PATERNY).fetchall())
@@ -67,7 +68,7 @@ sleep(1)
 print('-Edytuję formuły')
 a = f"'{str((datetime.strptime(source.title, '%Y%m%d') - timedelta(days=1)).strftime('%Y%m%d'))}'"
 b = f"'{source.title}'"
-for row in target.iter_rows(min_row=1, max_col=15, max_row=133):
+for row in target.iter_rows(min_row=1, max_col=15, max_row=134):
     for cell in row:
         if type(cell.value) is str:
             cell.value = cell.value.replace(a, b)
@@ -80,32 +81,36 @@ sleep(1)
 
 # wypełnianie raportu
 print("-Wypełniam arkusz\n")
-sleep(1)
+sleep(0.2)
 
 print('--Wibratory: ', vib)
 target['E132'] = vib
-sleep(1)
+sleep(0.2)
 
 print('--Wiercenie ręczne: ', xr)
 target['F132'] = xr
-sleep(1)
+sleep(0.2)
 
 print('--Wiercenie traktorem: ', xt)
 target['G132'] = xt
-sleep(1)
+sleep(0.2)
 
 print('--W tym patterny: ', paterny)
 target['H134'] = paterny
-sleep(1)
+sleep(0.2)
 
-print('--Skipy: ', skip)
-target['K132'] = skip
-sleep(1)
+print('--Skipy S: ', skip_s)
+target['K132'] = skip_s
+sleep(0.2)
+
+print('--Skipy R: ', skip_r)
+target['K133'] = skip_r
+sleep(0.2)
 
 print('--QC R: ', qc_r)
 if qc_r != 0:
     target['G53'] = qc_r
-sleep(1)
+sleep(0.2)
 
 print('--QC S: ', qc_s)
 if qc_s != 0:
