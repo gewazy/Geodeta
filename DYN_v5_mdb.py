@@ -26,7 +26,7 @@ print("DYNAMIT")
 Tk().withdraw()  # otworzenie okna
 open_filename = askopenfilename()  # wskazanie pliku do otwarcia
 # szukanie daty w nazwie pliku.
-np = re.search(r'\d{8}', open_filename, flags=re.IGNORECASE).group()
+np = re.search(r'\d{8}', open_filename).group()
 d, m, y = int(np[:4]), int(np[4:6]), int(np[6:])
 
 print("Otworz plik: " + open_filename)
