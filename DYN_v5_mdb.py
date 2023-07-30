@@ -6,9 +6,14 @@ import pyodbc
 import pyproj
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
+import re
 
 import init
 
+# Zamiany 30-07-2023 djurkowski:
+# - inny sposób szukania daty - wcześniej z nazwy zakładki obecnie za pomocą modułu .re z znazwy pliku (openfilename).
+#   uniezależniamy się od róznych nazw zakładek (sejsmolog na pl192 używa sryptu który nadaje inną nazwę zakłądki).
+# - bardziej czytelne liczenie daty juliańskiej
 
 
 def tran(lat, lon):
@@ -20,6 +25,10 @@ print("DYNAMIT")
 
 Tk().withdraw()  # otworzenie okna
 open_filename = askopenfilename()  # wskazanie pliku do otwarcia
+# szukanie daty w nazwie pliku.
+np = re.search(r'\d{8}', open_filename, flags=re.IGNORECASE).group()
+d, m, y = int(np[:4]), int(np[4:6]), int(np[6:])
+
 print("Otworz plik: " + open_filename)
 
 save_filename = open_filename[:-5] + '_OK.csv' # info o pliku zapisywanym
@@ -32,16 +41,15 @@ sheets = wb.sheetnames
 print('\nw pliku BoomBox znalazłem następujące zakładki: \n' + str(sheets))
 
 ws = wb.sheetnames[0]
-print('pracuję na zakładce: \n' + ws)
-dzien = f'{ws[8:12]}-{ws[12:14]}-{ws[14:16]} {ws[17:19]}:{ws[19:21]}:{ws[21:23]}'
-print (type (ws[8:12]))
-print(f'Czas generowania danych {dzien}')
+print('pracuję na zakładce: ' + ws)
+print(f'Czas generowania danych {d}-{m}-{y}')
 
 ws2 = wb[ws]
 
 #  liczenie daty juliańskiej - dj
-jd = int(datetime.datetime(int(ws[8:12]), int(ws[13] if ws[12] == '0' else ws[12:14]),
-                           int(ws[15] if ws[14] == '0' else ws[14:16])).strftime('%Y%j'))
+dzien = datetime.datetime(d, m, y)  # potrzebne w wypełnianiu pliku *.csv
+jd = int(dzien.strftime('%Y%j'))
+
 
 input(f'\nJedziemy? \nDzień juliański: {jd}, Ok? -> Enter ')
 
@@ -87,7 +95,7 @@ with open(save_filename, 'r') as r_DYN:
                        row['ID'],
                        row['Line'] if row['Line'] else 0,
                        row['Station'] if row['Station'] else 0,
-                       row['Time'] if row['Time'] else dzien,  # wstawienie daty eksportu boomboxa w sytuacji gdy nie ma zapisanego czasu odpalenia ładunku
+                       row['Time'] if row['Time'] else dzien,  # wstawienie daty generowania raportu
                        row['Status'] if row['Status'] else '',
                        row['Lat(deg N)'] if row['Lat(deg N)'] else 0,
                        row['Lon(deg E)'] if row['Lon(deg E)'] else 0,
