@@ -1,4 +1,6 @@
 import pyodbc
+import pyproj
+from datetime import datetime
 
 
 def comment(a):
@@ -10,20 +12,21 @@ def ddiff():
     '''Zapytanie  o dzień, z którego chemy zrobić raport'''
 
     try:
-        a = int(input('Wpisz Daydiff:\n 0 -> dzisiejsze dane, 1-> dane wczorajsze:\n'))
+        a = int(input('Wpisz Daydiff:\n 0 -> dzisiejsze dane, 1-> dane wczorajsze [2, 3 ...itd...]:\n'))
     except ValueError:
-        print('Podaj wartość liczbową 0 lub 1.')
+        print('Podaj wartość liczbową.')
         ddiff()
     else:
-        if a == 0 or a == 1:
-            return a
-        else:
-            print('Podaj wartość liczbową 0 lub 1')
-            ddiff()
+        return a
+
+
+def tran(lat, lon):
+    transformer = pyproj.Transformer.from_crs(4326, 2180)
+    return transformer.transform(lat, lon)
 
 
 # Dane podstawowe:
-GRUPA = 'PL192'
+GRUPA = 'PL202'
 GEODETA = "Dominik Jurkowski"
 ZUPT_BRYG = '[Goleń, Szatkowski], [Krawczyk, Dyja], [Istal, Nizioł]\n'
 KOMENTARZ = 'Mało dróg, istniejące drogi trudne i niebezpieczne, długie przejścia. Bardzo dalekie dojazdy (ponad 1h) '
@@ -31,13 +34,14 @@ DDIFF = ddiff()
 ## ************************* PLIKI *********************************************
 
 ## pliki wejsciowe
-MDB = r"c:\PL-192_Dylagowa_3D\05_database\PL-192_DYLAGOWA_3D.mdb"
-DRILL_RAPORT = r"c:\PL-192_Dylagowa_3D\09_wiertnictwo\Raport wiertnictwa PL192.xls"
+MDB = r"c:\PL-202_LAGIEWNIKI_3D\database\PL-202_LAGIEWNIKI_3D.mdb"
+DRILL_RAPORT = r"c:\PL-202_LAGIEWNIKI_3D\wiertnictwo\Raport wiertnictwa PL202.xls"
 
 ## pliki wyjściowe
-DPR = (r'c:\PL-192_Dylagowa_3D\06_raporty\\PL-192_Raport_geodezyjny_dzienny.xlsx',
-       r'c:\PL-192_Dylagowa_3D\06_raporty\\2023 PL-192 raport geodezja.xlsm')
+DPR = (r'c:\PL-202_LAGIEWNIKI_3D\raporty\\PL-202_Łagiewniki W_Raport_geodezyjny_dzienny.xls',
+       r'c:\PL-202_LAGIEWNIKI_3D\raporty\\2024_PL-202_ raport geodezja.xlsm')
 JSON_FILE = r'.\output\line_station.json'
+UKO_FILE = f'.\\output\\uko\\{str(datetime.now().strftime("%Y%m%d_%H%M"))}.uko'
 QC_DOMIAR_GPS = rf'.\output\{GRUPA}_QC_Domiar_GPS.csv'
 QC_DOMIAR_ZUPT = rf'.\output\{GRUPA}_QC_Domiar_ZUPT.txt'
 WZNAWIANIE_FILE = rf'.\output\{GRUPA}_max_indeks.txt'
@@ -46,12 +50,12 @@ WZNAWIANIE_FILE = rf'.\output\{GRUPA}_max_indeks.txt'
 # ***********************ZMIENNE PODSTAWOWE ************************************
 
 # zakresy linii punktów strzałowych i geofonów
-SOURCES_TRACK = "2210 And 2980"
-RECEIVERS_TRACK = "1001 And 1505"
+SOURCES_TRACK = "4163 And 4514"
+RECEIVERS_TRACK = "3100 And 3630"
 
 
 # descriptory
-VIBRATORY_DSC = "('x40', 'x45', 'x30', 'x35', 'x20', 'x25', 'x10', 'x15', 'xm', 'xm5')"
+VIBRATORY_DSC = "('x40', 'x45', 'x30', 'x35', 'x20', 'x25', 'x10', 'x15', 'xu', 'xu5', 'h40', 'h45', 'h30', 'h35', 'h20', 'h25', 'h10', 'h15')"
 DYNAMITY_DSC = "('xt', 'xr')"
 
 # redukcja wysokości dla wibratorów
@@ -74,12 +78,13 @@ else:
 # *********************** ADRESY EMAIL *****************************************
 
 SENDER = f"{GRUPA}surveyor@geofizyka.pl"
-SUPERVISOR = 'ibort@o2.pl'
-RECIPIENT_DPR = (f"{GRUPA}partychief@geofizyka.pl",
+SUPERVISOR = 'xxxx@o2.pl'
+RECIPIENT_DPR = (f"{GRUPA.lower()}partychief@geofizyka.pl",
                  "Wojciech.Burczynski@geofizyka.pl", "maciej.gruza@geofizyka.pl",
                  "tomasz.stankiewicz@geofizyka.pl", "ryszard.kolacz@geofizyka.pl", "renata.ciechanska@geofizyka.pl",
-                 "andrzej.czemerzynski@geofizyka.pl", f"{GRUPA}geophysicist@geofizyka.pl")
-RECIP_JSON = (f"{GRUPA}transcriber@geofizyka.pl", f"{GRUPA}lineboss@geofizyka.pl", "Slawomir.Bloniarz@geofizyka.pl")
+                 "andrzej.czemerzynski@geofizyka.pl", f"{GRUPA.lower()}geophysicist@geofizyka.pl")
+RECIP_JSON = (f"{GRUPA.lower()}transcriber@geofizyka.pl", f"{GRUPA.lower()}lineboss@geofizyka.pl", "Slawomir.Bloniarz@geofizyka.pl")
+RECIP_UKO = (f"{GRUPA.lower()}geophysicist@geofizyka.pl")
 
 
 if __name__ == "__main__":
